@@ -25,6 +25,17 @@ class App extends Component {
     this.setState({ reservations: [newReservation, ...this.state.reservations]})
   }
 
+  deleteReservation = (id) => {
+    const removedReservation = this.state.reservations.filter(reservation => reservation.id !== id)
+    this.setState({ reservations: removedReservation});
+    fetch(`http://localhost:3001/api/v1/reservations/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json'
+      }
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -35,7 +46,7 @@ class App extends Component {
           <Form addReservation={this.addReservation} />
         </div>
         <div className='resy-container'>
-          <Reservations reservations={this.state.reservations} />
+          <Reservations reservations={this.state.reservations} deleteReservation={this.deleteReservation} />
         </div>
       </div>
     )
